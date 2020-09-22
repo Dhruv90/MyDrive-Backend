@@ -17,7 +17,7 @@ exports.sendEmail = async (token, email, type) => {
         to: email,
         subject: "My Drive - Confirm your Account ✔", // Subject line
         text: "Click on the below link to confirm", // plain text body
-        html: `<a href = 'http://localhost:3000/auth/confirm/${token}'>Confirm Link</a>`, // html body
+        html: `<a href = 'https://mydrive-5969d.web.app/auth/confirm/${token}'>Confirm Link</a>`, // html body
       })
       console.log('Email Sent', info.messageId);
     }
@@ -27,7 +27,7 @@ exports.sendEmail = async (token, email, type) => {
         to: email,
         subject: "My Drive - Reset Password", // Subject line
         text: "Click on the below link to reset your password", // plain text body
-        html: `<a href = 'http://localhost:3000/auth/resetPass/${token}'>Reset Password</a>`, // html body
+        html: `<a href = 'https://mydrive-5969d.web.app/auth/resetPass/${token}'>Reset Password</a>`, // html body
       })
       console.log('Email Sent', info.messageId);
     }

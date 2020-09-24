@@ -7,22 +7,21 @@ const gridfs = require('./gridfs');
 const helmet = require('helmet');
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@nodejscourse-hnpdw.mongodb.net/${process.env.MONGO_DATABASE}?retryWrites=true&w=majority`;
-console.log(process.env.MONGO_PASS);
-
 
 const app = express();
 app.use(bodyParser.json());
-app.use(helmet());
+// app.use(helmet());
 
 app.use((req, res, next) => {
+    console.log('headers being set');
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "x-www-form-urlencoded, Content-Type, Authorization");
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     next();
 })
-app.use('/files', fileRoutes);
 app.use('/auth', authRoutes);
+app.use('/files', fileRoutes);
 
 
 app.use((error, req, res, next) => {

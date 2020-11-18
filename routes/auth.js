@@ -37,5 +37,9 @@ router.post('/resetPass',  [
     .isAlphanumeric(),
 ], authController.resetPass)
 
+router.post('/googleLogin', authController.googleLogin)
+
+router.post('/refreshToken', authController.refreshToken)
+
 
 module.exports = router;

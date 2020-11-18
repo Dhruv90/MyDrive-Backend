@@ -22,7 +22,8 @@ const storage = new GridStorage({
               bucketName: 'files',
               metadata: {
                 userId: req.userId,
-                originalname: file.originalname
+                originalname: file.originalname,
+                parent: req.body.parent
               }
             };
             if(req.filenames){

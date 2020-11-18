@@ -3,10 +3,10 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmail = require('../utilities/sendemail').sendEmail
+const validateGoogle = require('../middleware/is-auth').validateGoogle
 
 exports.postSignup = async (req, res, next) => {
   try {
-    console.log('register running');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("Invalid Entries");
@@ -18,9 +18,9 @@ exports.postSignup = async (req, res, next) => {
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
     const existingUser = await User.findOne({ email: email });
-    if (existingUser) {
+    if(existingUser && existingUser.confirmed === true){
       console.log('user exists')
-      res.status(400).json({ message: "Email already exists" });
+      res.status(400).json({ message: "Email already exists" });     
     }
     else if (password !== confirmPassword) {
       const err = new Error("Passwords Dont Match");
@@ -42,7 +42,11 @@ exports.postSignup = async (req, res, next) => {
         { expiresIn: "24h" }
       );
       sendEmail(token, email, 'confirmUser');
-      res.status(201).json({ message: "Account Created, please verify your account on email" });
+      if (existingUser && existingUser.confirmed === false){
+        res.status(201).json({ message: "Verification Email Re-Sent" });
+      } else {
+        res.status(201).json({ message: "Account Created, please verify your account on email" });
+      }
     }
   } catch (err) {
     if (!err.statusCode) {
@@ -86,7 +90,7 @@ exports.postLogin = async (req, res, next) => {
         userId: existingUser._id.toString(),
       },
       "secret",
-      { expiresIn: "1h" }
+      { expiresIn: '1h' }
     );
 
     res.status(200).json({message: 'User Logged In', token:token})
@@ -132,6 +136,12 @@ exports.forgotPass = async(req, res, next) => {
   try{
     const email = req.body.email.toLowerCase();
     const user = await User.findOne({email: email});
+    console.log(user);
+    if(!user){
+      const error = new Error('Email doesnt exist');
+      error.statusCode = 404;
+      throw error;
+    }
     if(user){
       const token = jwt.sign(
         {
@@ -202,4 +212,59 @@ exports.resetPass = async(req, res, next) => {
     }
     next(err);
   }
+}
+
+exports.googleLogin = async(req, res, next) => {
+  try{
+    const token = req.body.token;
+    const response = await validateGoogle(token);
+    if(response.status === true){
+      const email = response.email;
+      const existingUser = await User.findOne({ email: email });
+      if(!existingUser){
+        const user = new User({email: email, password: 'DummyPasswordForGoogleLogin', confirmed: true})
+        await user.save();
+      }
+      res.status(200).json({message: 'Login Successful'})
+    } else {
+      res.status(403).json({message: 'Could not verify email id'})
+    }
+  } catch(err){
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+}
+
+
+exports.refreshToken = async(req, res, next) => {
+  try{
+    const oldToken = req.body.token;
+    let userId, email;
+    jwt.verify(oldToken, 'secret', (err, decodedToken) => {
+      if(err){
+          throw err
+      } else {
+          userId = decodedToken.userId;
+          email = decodedToken.email;
+      }
+    });
+
+    const newToken = jwt.sign(
+      {
+        email: email,
+        userId: userId,
+      },
+      "secret",
+      { expiresIn: '1h' }
+    );
+    res.status(200).json({message: 'Refresh Token Sent', token:newToken})
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+
 }

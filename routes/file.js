@@ -5,13 +5,18 @@ const isAuth = require('../middleware/is-auth').isAuth
 
 const router = express.Router();
 
+router.post('/upload', isAuth, gridfs.upload.array('files', 30) , fileController.postFiles);
 
-router.post('/upload', isAuth, gridfs.upload.array('files', 8), fileController.postFiles);
+router.post('/newFolder', isAuth, fileController.newFolder);
+router.post('/delete', isAuth, fileController.deleteFileHandler);
+router.post('/moveToFolder', isAuth, fileController.moveToFolder);
+router.post('/deleteFolder', isAuth, fileController.deleteFolderHandler);
+
+router.get('/folders', isAuth, fileController.getFolders);
 router.get('/', isAuth, fileController.getAllObjects);
 router.get('/thumbnail/:filename', fileController.getThumbImage);
 router.get('/icons/:extension', fileController.getFileIcon);
-router.get('/:filename',isAuth, fileController.getFile);
-router.post('/delete', isAuth, fileController.deleteFile);
+router.get('/:filename', fileController.getFile);
 
 
 module.exports = router;

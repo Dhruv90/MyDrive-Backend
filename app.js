@@ -12,7 +12,7 @@ const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(helmet());
+app.use(helmet());
 
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");

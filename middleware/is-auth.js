@@ -2,13 +2,13 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client('284746306985-8j7llu7inlpc42ev7l878buln8n86pht.apps.googleusercontent.com')
+const client = new OAuth2Client('998253051245-r5r28fhr0m26qgbultjiko893pp1f3l0.apps.googleusercontent.com-8j7llu7inlpc42ev7l878buln8n86pht.apps.googleusercontent.com')
 
 const validateGoogle = async(token) => {
     try{
         const ticket = await client.verifyIdToken({
             idToken: token,
-            audience: '284746306985-8j7llu7inlpc42ev7l878buln8n86pht.apps.googleusercontent.com'
+            audience: '998253051245-r5r28fhr0m26qgbultjiko893pp1f3l0.apps.googleusercontent.com'
         });
         const payload = ticket.getPayload();
         if(payload){

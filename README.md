@@ -1,9 +1,9 @@
 # My Drive
-> Cloud based file storage application (similar to Google Drive/Dropbox) for uploading and accessing files from any device, anywhere
-> ReactJS front-end to upload and render files and photos, create folders, move files in a virtual file system
-> NodeJS REST API (using ExpressJS), accessing MongoDB database for file and user details storage
-> File and Photo uploads, storage in database and fetching from server through CRUD API
-> User Login and email verification through JWT tokens and Google OAuth Authorization
+* Cloud based file storage application (similar to Google Drive/Dropbox) for uploading and accessing files from any device, anywhere
+* ReactJS front-end to upload and render files and photos, create folders, move files in a virtual file system
+* NodeJS REST API (using ExpressJS), accessing MongoDB database for file and user details storage
+* File and Photo uploads, storage in database and fetching from server through CRUD API
+* User Login and email verification through JWT tokens and Google OAuth Authorization
 
 
 ## Table of contents
@@ -12,9 +12,7 @@
 * [Key Technologies](#key-technologies)
 * [Setup](#setup)
 * [Features](#features)
-* [Status](#status)
-* [Inspiration](#inspiration)
-* [Contact](#contact)
+
 
 ## General info
 This project is a practice/demonstration for creating a complex Full Stack Application using the MERN stack

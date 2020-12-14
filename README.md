@@ -18,7 +18,7 @@
 This project is a practice/demonstration for creating a complex Full Stack Application using the MERN stack
 
 ## Live Application
-> The application can be on the Firebase link![My Drive](https://mydrive-5969d.web.app/)
+> The application can be on the Firebase link [My Drive](https://mydrive-5969d.web.app/)
 
 ## Key Technologies
 * React - v16.13.1
